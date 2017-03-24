@@ -85,10 +85,16 @@ public class XmlDumpReader  extends DefaultHandler {
 	 */
 	public void readDump() throws IOException {
 		try {
+			System.setProperty("jdk.xml.totalEntitySizeLimit", String.valueOf(Integer.MAX_VALUE));
+
 			SAXParserFactory factory = SAXParserFactory.newInstance();
 			SAXParser parser = factory.newSAXParser();
-	
-			parser.parse(input, this);
+			Reader reader = new InputStreamReader(input,"UTF-8");
+			InputSource is = new InputSource(reader);
+			is.setEncoding("UTF-8");
+
+
+			parser.parse(is, this);
 		} catch (ParserConfigurationException e) {
 			throw (IOException)new IOException(e.getMessage()).initCause(e);
 		} catch (SAXException e) {
